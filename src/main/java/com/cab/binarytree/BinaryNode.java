@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 class BinaryNode<E extends Comparable<E>> {
-    private static final String GAP_START_LEFT = "╭";
-    private static final String GAP_START_RIGHT = "╰";
+    private static final String GAP_START_LEFT = "╰";
+    private static final String GAP_START_RIGHT = "╭";
     private static final String GAP = " ";
     private static final String GAP_END = "─";
 
@@ -73,7 +73,8 @@ class BinaryNode<E extends Comparable<E>> {
     public String toTreeString(final int gap, final boolean isLeft) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (this.left != null) stringBuilder.append(this.left.toTreeString(gap + 1, true));
+
+        if (this.right != null) stringBuilder.append(this.right.toTreeString(gap + 1, false));
         if (gap >= 1) {
             stringBuilder.append(BinaryNode.GAP.repeat((gap - 1) * 2));
             stringBuilder.append(isLeft ? BinaryNode.GAP_START_LEFT : BinaryNode.GAP_START_RIGHT);
@@ -82,7 +83,7 @@ class BinaryNode<E extends Comparable<E>> {
         stringBuilder.append(this.data);
         stringBuilder.append("(").append(this.getBalanceFactor()).append(")");
         stringBuilder.append("\n");
-        if (this.right != null) stringBuilder.append(this.right.toTreeString(gap + 1, false));
+        if (this.left != null) stringBuilder.append(this.left.toTreeString(gap + 1, true));
         return stringBuilder.toString();
     }
 
@@ -125,5 +126,43 @@ class BinaryNode<E extends Comparable<E>> {
 
     private void calculateBalanceFactor() {
         this.balanceFactorValue = BinaryNode.getHeight(this.left) - BinaryNode.getHeight(this.right);
+    }
+
+    public void rotateRightLeftChild() {
+        BinaryNode<E> pivot = this.left;
+        BinaryNode<E> Child = BinaryNode.getLeft(pivot);
+        BinaryNode<E> grandChild = BinaryNode.getRight(Child);
+
+        this.left = Child;
+        BinaryNode.setRight(Child, pivot);
+        BinaryNode.setLeft(pivot, grandChild);
+    }
+
+    private static <E extends Comparable<E>> BinaryNode<E> getLeft(final BinaryNode<E> pivot) {
+        return pivot == null ? null : pivot.left;
+    }
+
+    private static <E extends Comparable<E>> BinaryNode<E> getRight(final BinaryNode<E> node) {
+        return node == null ? null : node.right;
+    }
+
+    private static <E extends Comparable<E>> void setRight(final BinaryNode<E> node, final BinaryNode<E> child) {
+        if (node == null) throw new IllegalArgumentException("Node is null");
+        node.right = child;
+    }
+
+    private static <E extends Comparable<E>> void setLeft(final BinaryNode<E> node, final BinaryNode<E> child) {
+        if (node == null) throw new IllegalArgumentException("Node is null");
+        node.left = child;
+    }
+
+    public void rotateLeftLeftChild() {
+        BinaryNode<E> pivot = this.left;
+        BinaryNode<E> Child = BinaryNode.getRight(pivot);
+        BinaryNode<E> grandChild = BinaryNode.getLeft(Child);
+
+        this.left = Child;
+        BinaryNode.setLeft(Child, pivot);
+        BinaryNode.setRight(pivot, grandChild);
     }
 }

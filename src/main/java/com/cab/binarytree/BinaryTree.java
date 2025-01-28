@@ -92,4 +92,13 @@ public class BinaryTree<E extends Comparable<E>> {
     public boolean isAVL() {
         return BinaryNode.isAVL(this.root);
     }
+
+    public void testrotateRightLeftChild() {
+        this.root.rotateRightLeftChild();
+    }
+
+    public void testrotateLeftLeftChild() {
+        this.root.rotateLeftLeftChild();
+    }
+
 }
