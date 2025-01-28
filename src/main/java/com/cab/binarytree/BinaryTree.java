@@ -1,4 +1,4 @@
-package com.tree;
+package com.cab.binarytree;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class BinaryTree<E extends Comparable<E>> {
             if (this.root == null) {
                 this.root = new BinaryNode<>(data);
             } else {
-                this.root.insert(data);
+                this.root.add(data);
             }
         }
     }
@@ -31,6 +31,16 @@ public class BinaryTree<E extends Comparable<E>> {
         return "BinaryTree{" +
                 "root=" + root +
                 '}';
+    }
+
+    public String toPrettyString() {
+        if (this.root == null) return "";
+        return this.root.toPrettyString();
+    }
+
+    public String toTreeString() {
+        if (this.root == null) return "";
+        return this.root.toTreeString();
     }
 
     public String prefix() {
