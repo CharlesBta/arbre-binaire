@@ -90,7 +90,6 @@ public class BinaryTree<E extends Comparable<E>> {
     }
 
     public boolean isAVL() {
-        if (this.root == null) return true;
-        return this.root.isAVL();
+        return BinaryNode.isAVL(this.root);
     }
 }

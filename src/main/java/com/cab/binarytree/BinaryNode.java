@@ -10,7 +10,7 @@ class BinaryNode<E extends Comparable<E>> {
     private static final String GAP_END = "─";
 
     private E data;
-    private int balanceFactor;
+    private int balanceFactorValue;
     private BinaryNode<E> left = null;
     private BinaryNode<E> right = null;
 
@@ -22,12 +22,22 @@ class BinaryNode<E extends Comparable<E>> {
         this.data = data;
         this.left = left;
         this.right = right;
-        this.balanceFactor = 0;
+        this.balanceFactorValue = 0;
     }
 
     static <E extends Comparable<E>> int getHeight(BinaryNode<E> child) {
         if (child == null) return 0;
         return child.getHeight();
+    }
+
+    public static <E extends Comparable<E>> boolean isAVL(final BinaryNode<E> node) {
+        if (node == null) return true;
+        return node.isAVL();
+    }
+
+    private boolean isAVL() {
+        if (Math.abs(this.getBalanceFactor()) > 1) return false;
+        return BinaryNode.isAVL(this.left) && BinaryNode.isAVL(this.right);
     }
 
     void add(final E value) {
@@ -114,15 +124,6 @@ class BinaryNode<E extends Comparable<E>> {
     }
 
     private void calculateBalanceFactor() {
-        this.balanceFactor = BinaryNode.getHeight(this.left) - BinaryNode.getHeight(this.right);
-    }
-
-    public boolean isAVL() {
-        if (this.left == null && this.right == null) return true;
-        if (Math.abs(this.getBalanceFactor()) > 1) {
-            return false;
-        }
-        if (this.left != null && !this.left.isAVL()) return false;
-        return this.right != null && !this.right.isAVL();
+        this.balanceFactorValue = BinaryNode.getHeight(this.left) - BinaryNode.getHeight(this.right);
     }
 }
